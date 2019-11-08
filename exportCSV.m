@@ -1,33 +1,33 @@
-% @param P patrón para identificar un formato en específico (.tiff, .jpeg, .jpg, .png, etc.)
-% @param dir directorio con imágenes binarias
+% @param P patrÃ³n para identificar un formato en especÃ­fico (.tiff, .jpeg, .jpg, .png, etc.)
+% @param dir directorio con imÃ¡genes binarias
 % @param dest ruta destino del archivo CSV
 % @param fn nombre del archivo CSV
 %
 function [ CSV ] = exportCSV(P, dir, dest, fn)
-    % Se abre el archivo de texto indicado en los parámetros, de existir el
-    % archivo, su contenido será sobrescrito, en caso de no existir, el
-    % archivo será creado y se agregará el contenido generado.
+    % Se abre el archivo de texto indicado en los parÃ¡metros, de existir el
+    % archivo, su contenido serÃ¡ sobrescrito, en caso de no existir, el
+    % archivo serÃ¡ creado y se agregarÃ¡ el contenido generado.
     CSV = fopen(strcat(strcat(dest, fn), '.csv'), 'w');
     
     for slice = 1: numel(P)
-        % @var num slice iterador/contador de las imágenes del directorio
-        % @var str fileName nombre de la imagen en la posición que indica el iterador
-        % @var mat thisSlice imagen leíada basándose en la variable fileName
+        % @var num slice iterador/contador de las imÃ¡genes del directorio
+        % @var str fileName nombre de la imagen en la posiciÃ³n que indica el iterador
+        % @var mat thisSlice imagen leÃ­ada basÃ¡ndose en la variable fileName
         fileName = fullfile(dir, P(slice).name);
         thisSlice = imread(fileName);
         
         % Se itera sobre la imagen actual para detectar los puntos de
-        % interés, es decir, los puntos con un valor mayor a 0.
+        % interÃ©s, es decir, los puntos con un valor mayor a 0.
         for i = 1: size(thisSlice, 1)
             for j = 1: size(thisSlice, 2)
                 if thisSlice(i, j) > 0
-                    % Impresión del arreglo de objetos, 
+                    % ImpresiÃ³n de las coodenadas X, Y, y Z 
                     fprintf(CSV, '%d,%d,%d\n', i, j, slice);
                 end
             end
         end
     end
     
-    % Se cierra el archivo que se abrió al inicio de la función.
+    % Se cierra el archivo que se abriÃ³ al inicio de la funciÃ³n.
     fclose(CSV);
 end
